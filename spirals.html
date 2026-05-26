@@ -1,0 +1,596 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Knights Spiral — Gallery</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d1a;
+      color: #f0ead8;
+      font-family: 'Courier New', monospace;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 0.12em;
+      padding: 1.2rem 0 0.3rem;
+      color: #ffe640;
+      margin: 0;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 1.4rem;
+      letter-spacing: 0.05em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.4rem;
+      padding: 0 1.4rem 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #12121f;
+      border: 1px solid #2a2a44;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: #ffe640;
+      box-shadow: 0 0 18px rgba(255,230,64,0.18);
+    }
+    .card-header {
+      padding: 0.7rem 1rem 0.4rem;
+      background: #0d0d1a;
+      border-bottom: 1px solid #2a2a44;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffe640;
+      margin: 0 0 0.2rem;
+    }
+    .card-desc {
+      font-size: 0.75rem;
+      color: #aab8cc;
+      margin: 0 0 0.25rem;
+    }
+    .card-url {
+      font-size: 0.65rem;
+      color: #556;
+      word-break: break-all;
+      margin: 0;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 260px;
+      border: none;
+      pointer-events: none;
+    }
+    .card-footer {
+      padding: 0.5rem 1rem;
+      display: flex;
+      gap: 0.5rem;
+      background: #0d0d1a;
+      border-top: 1px solid #2a2a44;
+    }
+    .btn {
+      display: inline-block;
+      padding: 5px 14px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #f0ead8;
+      background: rgba(255,230,64,0.12);
+      border: 1px solid rgba(255,230,64,0.5);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn:hover {
+      background: rgba(255,230,64,0.28);
+    }
+
+    /* ── Custom Launch Form ───────────────────────────────────── */
+    .launch-panel {
+      max-width: 1000px;
+      margin: 0 auto 1.8rem;
+      padding: 1.2rem 1.4rem 1rem;
+      background: #12121f;
+      border: 1px solid #2a2a44;
+      border-radius: 10px;
+    }
+    .launch-panel h2 {
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      color: #ffe640;
+      text-transform: uppercase;
+    }
+    .form-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+    .form-row label {
+      font-size: 0.72rem;
+      color: #aab8cc;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 4.5rem;
+    }
+    .piece-slots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .slot-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+    .slot-label {
+      font-size: 0.6rem;
+      color: #556;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .form-select, .form-input {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      color: #f0ead8;
+      background: #0d0d1a;
+      border: 1px solid #2a2a44;
+      border-radius: 4px;
+      padding: 4px 6px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-select:focus, .form-input:focus {
+      border-color: #ffe640;
+    }
+    .form-select.piece-sel  { width: 9.2rem; }
+    .form-select.color-sel  { width: 6.4rem; }
+    .form-input.start-inp   { width: 3.6rem; text-align: center; }
+    .form-input.wide-inp    { width: 7rem; }
+    .count-btn {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1;
+      color: #ffe640;
+      background: rgba(255,230,64,0.08);
+      border: 1px solid rgba(255,230,64,0.4);
+      border-radius: 4px;
+      padding: 3px 9px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .count-btn:hover { background: rgba(255,230,64,0.22); }
+    .count-btn:disabled { opacity: 0.3; cursor: default; }
+    .url-preview {
+      font-size: 0.65rem;
+      color: #6688aa;
+      word-break: break-all;
+      background: #0a0a16;
+      border: 1px solid #1e1e36;
+      border-radius: 4px;
+      padding: 0.45rem 0.6rem;
+      margin-bottom: 0.7rem;
+      min-height: 1.6rem;
+    }
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .btn-open {
+      padding: 7px 22px;
+      font-size: 0.82rem;
+    }
+    .form-warning {
+      font-size: 0.7rem;
+      color: #e05050;
+      letter-spacing: 0.04em;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e36;
+      margin: 0.9rem 0 0.75rem;
+    }
+
+    /* ── Image Gallery Card ───────────────────────────────────── */
+    .img-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 0.7rem;
+    }
+    .img-thumb {
+      display: block;
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #2a2a44;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .img-thumb:hover {
+      border-color: #ffe640;
+      box-shadow: 0 0 8px rgba(255,230,64,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<h1>♞ Knights Spiral — Gallery</h1>
+<p class="subtitle">Multi-piece parameter combinations — click Open to run full-screen</p>
+
+<!-- ── Custom Launch Form ──────────────────────────────────────────── -->
+<div class="launch-panel">
+  <h2>⚙ Custom Launch</h2>
+
+  <!-- Pieces row -->
+  <div class="form-row">
+    <label>Pieces</label>
+    <div class="piece-slots" id="piece-slots"></div>
+    <button class="count-btn" id="btn-remove" onclick="removeSlot()" title="Remove piece">−</button>
+    <button class="count-btn" id="btn-add"    onclick="addSlot()"    title="Add piece">+</button>
+  </div>
+
+  <!-- Colors row -->
+  <div class="form-row">
+    <label>Colors</label>
+    <div class="piece-slots" id="color-slots"></div>
+  </div>
+
+  <!-- Start positions row -->
+  <div class="form-row">
+    <label>Start Pos</label>
+    <div class="piece-slots" id="start-slots"></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Moves + Size row -->
+  <div class="form-row">
+    <label>Moves</label>
+    <input  class="form-input wide-inp" id="inp-moves" type="number" min="1"
+            placeholder="unlimited" oninput="refreshPreview()">
+    <label style="margin-left:1rem">Size</label>
+    <input  class="form-input wide-inp" id="inp-size"  type="number" min="5" max="8001" step="2"
+            placeholder="4001 (default)" oninput="refreshPreview()">
+  </div>
+
+  <hr class="divider">
+
+  <!-- URL preview -->
+  <div class="url-preview" id="url-preview"></div>
+
+  <!-- Actions -->
+  <div class="form-actions">
+    <a class="btn btn-open" id="btn-open" href="#" target="_blank" rel="noopener">Open ↗</a>
+    <span class="form-warning" id="form-warning"></span>
+  </div>
+</div>
+
+<div class="grid" id="gallery"></div>
+
+<script>
+// ── Custom Launch Form ───────────────────────────────────────────────
+
+var PIECE_OPTS = [
+  { value: "knight",   label: "Knight (N)"     },
+  { value: "rook",     label: "Rook (R)"       },
+  { value: "bishop",   label: "Bishop (B)"     },
+  { value: "camel",    label: "Camel (3,1)"    },
+  { value: "zebra",    label: "Zebra (3,2)"    },
+  { value: "giraffe",  label: "Giraffe (4,1)"  },
+  { value: "antelope", label: "Antelope (4,3)" }
+];
+
+var COLOR_OPTS = [
+  "BLACK", "RED", "BLUE", "GREEN", "PURPLE", "ORANGE", "TEAL"
+];
+
+var COLOR_SWATCHES = {
+  BLACK:  "#333333",
+  RED:    "#cc1122",
+  BLUE:   "#2255dd",
+  GREEN:  "#22aa44",
+  PURPLE: "#8833cc",
+  ORANGE: "#dd8833",
+  TEAL:   "#22aaaa"
+};
+
+var MAX_PIECES = 7;
+var slotCount  = 2;
+
+function makePieceSelect(idx) {
+  var sel = document.createElement("select");
+  sel.className = "form-select piece-sel";
+  sel.id = "piece-" + idx;
+  PIECE_OPTS.forEach(function(o) {
+    var opt = document.createElement("option");
+    opt.value = o.value;
+    opt.textContent = o.label;
+    sel.appendChild(opt);
+  });
+  sel.value = "knight";
+  sel.addEventListener("change", refreshPreview);
+  return sel;
+}
+
+function makeColorSelect(idx) {
+  var sel = document.createElement("select");
+  sel.className = "form-select color-sel";
+  sel.id = "color-" + idx;
+  COLOR_OPTS.forEach(function(c) {
+    var opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    opt.style.background = COLOR_SWATCHES[c];
+    opt.style.color = (c === "BLACK") ? "#ccc" : "#fff";
+    sel.appendChild(opt);
+  });
+  sel.value = COLOR_OPTS[idx] || COLOR_OPTS[0];
+  sel.addEventListener("change", refreshPreview);
+  return sel;
+}
+
+function makeStartInput(idx) {
+  var inp = document.createElement("input");
+  inp.type      = "number";
+  inp.min       = "0";
+  inp.className = "form-input start-inp";
+  inp.id        = "start-" + idx;
+  inp.value     = idx;
+  inp.addEventListener("input", refreshPreview);
+  return inp;
+}
+
+function makeSlotGroup(child, idx) {
+  var grp   = document.createElement("div");
+  grp.className = "slot-group";
+  var lbl   = document.createElement("span");
+  lbl.className = "slot-label";
+  lbl.textContent = "P" + (idx + 1);
+  grp.appendChild(lbl);
+  grp.appendChild(child);
+  return grp;
+}
+
+function rebuildSlots() {
+  var pCont  = document.getElementById("piece-slots");
+  var cCont  = document.getElementById("color-slots");
+  var sCont  = document.getElementById("start-slots");
+
+  // Capture current values before clearing.
+  var oldPieces = [], oldColors = [], oldStarts = [];
+  for (var i = 0; i < MAX_PIECES; i++) {
+    var ps = document.getElementById("piece-" + i);
+    var cs = document.getElementById("color-" + i);
+    var ss = document.getElementById("start-" + i);
+    oldPieces[i] = ps ? ps.value : "knight";
+    oldColors[i] = cs ? cs.value : (COLOR_OPTS[i] || COLOR_OPTS[0]);
+    oldStarts[i] = ss ? ss.value : String(i);
+  }
+
+  pCont.innerHTML = "";
+  cCont.innerHTML = "";
+  sCont.innerHTML = "";
+
+  for (var j = 0; j < slotCount; j++) {
+    var ps2 = makePieceSelect(j);
+    ps2.value = oldPieces[j] || "knight";
+
+    var cs2 = makeColorSelect(j);
+    cs2.value = oldColors[j] || (COLOR_OPTS[j] || COLOR_OPTS[0]);
+
+    var ss2 = makeStartInput(j);
+    ss2.value = (oldStarts[j] !== undefined && oldStarts[j] !== "") ? oldStarts[j] : String(j);
+
+    pCont.appendChild(makeSlotGroup(ps2, j));
+    cCont.appendChild(makeSlotGroup(cs2, j));
+    sCont.appendChild(makeSlotGroup(ss2, j));
+  }
+
+  document.getElementById("btn-remove").disabled = (slotCount <= 1);
+  document.getElementById("btn-add").disabled    = (slotCount >= MAX_PIECES);
+  refreshPreview();
+}
+
+function addSlot() {
+  if (slotCount < MAX_PIECES) { slotCount++; rebuildSlots(); }
+}
+
+function removeSlot() {
+  if (slotCount > 1) { slotCount--; rebuildSlots(); }
+}
+
+function buildURL() {
+  var pieces = [], colors = [], starts = [];
+  for (var i = 0; i < slotCount; i++) {
+    pieces.push(document.getElementById("piece-" + i).value);
+    colors.push(document.getElementById("color-" + i).value);
+    var sv = document.getElementById("start-" + i).value.trim();
+    var sn = parseInt(sv, 10);
+    starts.push(sv === "" || isNaN(sn) ? i : sn);
+  }
+
+  // Duplicate color check.
+  var seen = {};
+  var dupes = [];
+  colors.forEach(function(c) {
+    if (seen[c]) dupes.push(c);
+    seen[c] = true;
+  });
+  if (dupes.length) return { url: null, error: "Duplicate color: " + dupes[0] };
+
+  // Always emit pieces, colors, and start so the URL is self-describing
+  // and the user can verify exactly what each piece will do.
+  var qs = [];
+  qs.push("pieces=" + pieces.join(","));
+  qs.push("colors=" + colors.join(","));
+  qs.push("start="  + starts.join(","));
+
+  var mv = document.getElementById("inp-moves").value.trim();
+  if (mv !== "" && parseInt(mv, 10) > 0) qs.push("moves=" + parseInt(mv, 10));
+
+  var sz = document.getElementById("inp-size").value.trim();
+  if (sz !== "") {
+    var szn = parseInt(sz, 10);
+    if (!isNaN(szn)) qs.push("size=" + szn);
+  }
+
+  return { url: "knights_spiral.html?" + qs.join("&"), error: null };
+}
+
+function refreshPreview() {
+  var result  = buildURL();
+  var preview = document.getElementById("url-preview");
+  var warning = document.getElementById("form-warning");
+  var openBtn = document.getElementById("btn-open");
+
+  if (result.error) {
+    preview.textContent = "";
+    warning.textContent = "⚠ " + result.error;
+    openBtn.href        = "#";
+    openBtn.style.opacity = "0.4";
+    openBtn.style.pointerEvents = "none";
+  } else {
+    preview.textContent = result.url;
+    warning.textContent = "";
+    openBtn.href        = result.url;
+    openBtn.style.opacity = "";
+    openBtn.style.pointerEvents = "";
+  }
+}
+
+// Init.
+rebuildSlots();
+</script>
+
+<script>
+// ── Gallery scenarios ────────────────────────────────────────────────
+var scenarios = [
+  {
+    title: "Classic Black, Red Knights",
+    desc:  "Two knights on default starting squares — the canonical stranded mode.",
+    params: ""
+  },
+  {
+    title: "Three Knights",
+    desc:  "Three knights each start on consecutive spiral squares.",
+    params: "pieces=knight,knight,knight&colors=BLACK,RED,BLUE&start=0,1,2"
+  },
+  {
+    title: "Black Knight, Green Antelope",
+    desc:  "A black knight alternates with a green (4,3)-leaper.",
+    params: "pieces=knight,antelope&colors=BLACK,GREEN&start=0,1"
+  }
+];
+
+var IMAGE_THUMBS = [
+  "knight2-black-red-2001.png",
+  "knight2-default-1001.png",
+  "knight3-trio-2001.png",
+  "knight4-quad-2001.png",
+  "knight5-penta-2001.png",
+  "knight6-hex-2001.png",
+  "knight7-sept-2001.png",
+  "knight-antelope-black-green-2001.png",
+  "rook2-blue-green-101.png"
+];
+
+var base = "knights_spiral.html?";
+var gallery = document.getElementById("gallery");
+
+scenarios.forEach(function(s) {
+  var url = s.params ? base + s.params : "knights_spiral.html";
+
+  var card = document.createElement("div");
+  card.className = "card";
+
+  var header = document.createElement("div");
+  header.className = "card-header";
+  header.innerHTML =
+    '<p class="card-title">' + s.title + '</p>' +
+    '<p class="card-desc">'  + s.desc  + '</p>' +
+    '<p class="card-url">'   + url     + '</p>';
+
+  var frame = document.createElement("iframe");
+  frame.src = url;
+  frame.loading = "lazy";
+  frame.title = s.title;
+
+  var footer = document.createElement("div");
+  footer.className = "card-footer";
+
+  var openBtn = document.createElement("a");
+  openBtn.className = "btn";
+  openBtn.href = url;
+  openBtn.target = "_blank";
+  openBtn.rel = "noopener";
+  openBtn.textContent = "Open ↗";
+
+  footer.appendChild(openBtn);
+  card.appendChild(header);
+  card.appendChild(frame);
+  card.appendChild(footer);
+  gallery.appendChild(card);
+});
+
+// ── Rendered images card ─────────────────────────────────────────────
+(function() {
+  var card = document.createElement("div");
+  card.className = "card";
+
+  var header = document.createElement("div");
+  header.className = "card-header";
+  header.innerHTML =
+    '<p class="card-title">Rendered Images</p>' +
+    '<p class="card-desc">Regression snapshots from the test suite — click any thumbnail for full size.</p>';
+
+  var imgGrid = document.createElement("div");
+  imgGrid.className = "img-gallery";
+
+  IMAGE_THUMBS.forEach(function(name) {
+    var path = "test/images/" + name;
+    var a = document.createElement("a");
+    a.href = path;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.title = name;
+    var img = document.createElement("img");
+    img.src = path;
+    img.alt = name;
+    img.className = "img-thumb";
+    img.loading = "lazy";
+    a.appendChild(img);
+    imgGrid.appendChild(a);
+  });
+
+  card.appendChild(header);
+  card.appendChild(imgGrid);
+  gallery.appendChild(card);
+}());
+</script>
+
+</body>
+</html>

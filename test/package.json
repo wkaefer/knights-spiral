@@ -1,0 +1,9 @@
+{
+  "name": "knights-spiral-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Headless test-image generator for knights_spiral.js (browser-only game). Not required to run the game itself -- the game is a static page with no build step. This package exists only for the Makefile-driven test renders.",
+  "dependencies": {
+    "canvas": "^3.2.3"
+  }
+}
