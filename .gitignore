@@ -1,0 +1,9 @@
+test/node_modules/
+test/package-lock.json
+test/imagesnevermind/
+knights_spiral-*.png
+/.backups/
+.backups
+AGENTS.md
+/.agents/
+/.codex/
